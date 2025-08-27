@@ -1,0 +1,419 @@
+<%- include('../partials/header') %>
+
+<%- include('../partials/navbar') %>
+
+<% if(errorMessage) { %>
+
+    <%- include('../partials/notFound') %>
+
+<% } else { %>
+
+<main class="container pt-4">
+    <!-- Back Button & Requests Button-->
+    <div class="mb-4 d-flex justify-content-between">
+        <button
+            class="btn btn-hover-secondary-subtle d-flex align-items-center gap-2 text-dark border border-secondary-subtle font-weight-bold"
+            onclick="window.history.back()" style="font-weight: 500;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="scale: 0.8;">
+                <path d="M12 19l-7-7 7-7" />
+                <path d="M19 12H5" />
+            </svg>
+            Go Back
+        </button>
+        <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-warning" id="requestPickupBtn" data-bs-toggle="modal" data-bs-target="#requestDonationModal">
+                <i class="fas fa-plus me-1"></i>Request Pickup
+            </button>
+            <a href="/donations/<%= donation._id %>/edit">
+                <button type="button" class="btn btn-outline-warning">
+                    <i class="fas fa-edit me-1"></i>Edit Donation
+                </button>
+            </a>
+            <a href="#donationRequests" style="text-decoration: none;">
+                <button
+                    class="btn btn-hover-secondary-subtle d-flex align-items-center gap-2 text-dark border border-secondary-subtle font-weight-bold"
+                    style="font-weight: 500;">
+                    <i class="bi bi-plus"></i>Pickup Requests
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Left Column -->
+        <div class="col-lg-8">
+            <!-- Donation Header -->
+            <div class="card mb-4">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-4">
+                        <div>
+                            <h2 class="card-title mb-2 fs-3">
+                                <%= donation.title %>
+                            </h2>
+                            <p class="text-muted mb-0">
+                                <%= donation.source %>
+                            </p>
+                        </div>
+                        <span class="badge badge-<%= donation.status.toLowerCase() %> fs-6">
+                            <%= donation.status %>
+                        </span>
+                    </div>
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <button class="btn btn-info" id="prevDonationImage">❮</button>
+                            <div style="height: 60vh; width: 100%;" class="text-center">
+                                <img id="viewerDonationImage" src="<%= donation.images?.[0] || '/images/no-image.jpg' %>" class="rounded"
+                                    style="max-height: 100%; width: 100%; object-fit: cover;" alt="Donation Image">
+                            </div>
+                            <button class="btn btn-info" id="nextDonationImage">❯</button>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="mt-5">
+                            <h3 class="fs-5 mb-2">Estimated number of people can be fed:</h3>
+                            <p>
+                                <%= donation.numberOfPeopleFed || 'Not specified' %>
+                            </p>
+                        </div>
+                        <div class="mt-4">
+                            <h3 class="fs-5 mb-2">Description:</h3>
+                            <p>
+                                <%= donation.description || 'No description provided.' %>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-lg-4">
+            <!-- Contact Information -->
+            <div class="card mb-4">
+                <div class="card-header p-4">
+                    <h3 class="fs-5 mb-0">Contact Information</h3>
+                </div>
+                <div class="card-body p-4 pt-0">
+                    <div class="mb-3 d-flex align-items-center gap-2">
+                        <span class="fs-5 text-secondary"><i class="bi bi-person" style="font-size: 1.3rem;"></i></span>
+                        <div>
+                            <div class="fw-medium">
+                                <%= donation.personName %>
+                            </div>
+                            <div class="text-muted small">Contact Person</div>
+                        </div>
+                    </div>
+                    <div class="mb-3 d-flex align-items-center gap-2">
+                        <span class="fs-5 text-secondary"><i class="bi bi-telephone"
+                                style="font-size: 1.15rem;"></i></span>
+                        <div>
+                            <div class="fw-medium">
+                                <%= donation.contact %>
+                            </div>
+                            <div class="text-muted small">Phone</div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="fs-5 text-secondary">@</span>
+                        <div>
+                            <div class="fw-medium">
+                                <%= donation.email %>
+                            </div>
+                            <div class="text-muted small">Email</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline -->
+            <div class="card mb-4">
+                <div class="card-header p-4">
+                    <h3 class="fs-5 mb-0">Timeline</h3>
+                </div>
+                <div class="card-body p-4 pt-0">
+                    <div class="mb-3 d-flex align-items-center gap-2">
+                        <span class="fs-5 text-secondary"><i class="bi bi-clock" style="font-size: 1.1rem;"></i></span>
+                        <div>
+                            <div class="fw-medium">Created</div>
+                            <div class="text-muted small">
+                                <%= donation.createdAt.toLocaleString() %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="fs-5 text-secondary"><i class="bi bi-clock-history"
+                                style="font-size: 1.1rem;"></i></span>
+                        <div>
+                            <div class="fw-medium">Last Updated</div>
+                            <div class="text-muted small">
+                                <%= donation.updatedAt.toLocaleString() %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Food Items Table -->
+    <div class="card mb-4 p-4">
+        <div class="card-header mb-4">
+            <h3 class="fs-5 mb-0">Food Items</h3>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table align-middle table-bordered border rounded-3 overflow-hidden shadow-sm mb-1 tr-hover"
+                    id="itemsTable" style="white-space: nowrap;">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Condition</th>
+                            <th>Quantity</th>
+                            <th>Cooked Date &amp; Time</th>
+                            <th>Expiry Date &amp; Time</th>
+                            <th>Images</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% donation.items.forEach((item, index)=> { %>
+                            <tr>
+                                <td>
+                                    <%= index + 1 %>
+                                </td>
+                                <td>
+                                    <%= item.name %>
+                                </td>
+    
+                                <!-- Type Badge -->
+                                <td>
+                                    <span class="badge badge-type">
+                                        <%= item.type %>
+                                    </span>
+                                </td>
+    
+                                <!-- Condition Badge -->
+                                <td>
+                                    <span
+                                        class="badge badge-<%= item.condition.toLowerCase().replace(/\s+/g, '') %> rounded-5">
+                                        <%= item.condition %>
+                                    </span>
+                                </td>
+    
+                                <!-- Quantity with Unit -->
+                                <td>
+                                    <%= item.quantity %>
+                                        <%= item.unit %>
+                                </td>
+    
+                                <!-- Cooked Date & Time -->
+                                <td>
+                                    <%= item.cookedDate ? item.cookedDate.toLocaleDateString() : '' %> - <%= item.cookedTime
+                                            %>
+                                </td>
+    
+                                <!-- Expiry Date & Time -->
+                                <td>
+                                    <% if (item.expiryDate || item.expiryTime) { %>
+                                        <%= item.expiryDate ? item.expiryDate.toLocaleDateString() : '' %> - 
+                                            <%= item.expiryTime || '' %>
+                                    <% } else { %>
+                                        <em>N/A</em>
+                                    <% } %>
+                                </td>
+    
+                                <!-- First Image & View All -->
+                                <td>
+                                    <% if (item.itemImages && item.itemImages.length> 0) { %>
+                                        <div class="border rounded p-1" style="max-width: 100px;">
+                                            <img src="<%= item.itemImages[0] %>" alt="food item" class="img-fluid" />
+                                            <div class="text-center hover-blue" data-bs-toggle="modal"
+                                                data-bs-target="#images-modal">
+                                                View all
+                                            </div>
+                                        </div>
+                                    <% } else { %>
+                                        <em>N/A</em>
+                                    <% } %>
+                                </td>
+                            </tr>
+                            <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pickup Location -->
+    <div class="card mb-4 p-4">
+        <div class="card-header mb-4 p-0">
+            <h3 class="fs-5 mb-0">Pickup Location</h3>
+        </div>
+        <div class="card-body p-0">
+            <div class="mb-3">
+                <div class="d-flex justify-content-between flex-wrap">
+                    <div class="d-flex gap-2 flex-nowrap mb-2">
+                        <span class="fs-4 text-secondary"><i class="bi bi-geo-alt"></i></span>
+                        <div>
+                            <p class="mb-0 fw-medium"> <%- donation.address %> </p>
+                            <p class="mb-0 text-muted small"> 
+                                <%- donation.city + ', ' + donation.state + ' - ' + donation.pincode %> 
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="https://www.google.com/maps?q=<%- donation.location.latitude %>,<%- donation.location.longitude %>" target="_blank" style="text-decoration: none;">
+                            <button class="btn btn-hover-secondary-subtle d-flex align-items-center gap-2 text-dark border border-secondary-subtle font-weight-bold" style="font-weight: 500;">
+                                 <i class="fas fa-crosshairs"></i> Open in Google Maps
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <!-- Map Placeholder -->
+            <div class="mt-2 donate-map-container">
+                <div class="donate-map-inner">
+                    <div class="donate-map-bg"></div>
+                    <div id="pickupMap"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pickup Requests from NGOs -->
+    <div class="card mb-4 p-4" id="donationRequests">
+        <div class="card-header p-0 mb-4">
+            <h3 class="fs-5 mb-1">Pickup Requests from NGOs</h3>
+            <p class="text-muted small mb-0">NGOs interested in picking up this donation</p>
+        </div>
+        <div class="card-body p-0">
+            <!-- NGO 1 -->
+            <div class="d-flex align-items-start gap-3 border rounded p-3 mb-3">
+                <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=50&h=50&fit=crop"
+                    alt="Food For All Foundation" class="rounded-circle" width="48" height="48">
+                <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <div class="fw-semibold">Food For All Foundation</div>
+                        <span class="text-muted small">6/13/2024 5:00:00 PM</span>
+                    </div>
+                    <div class="text-muted small mb-1">Contact: Priya Sharma • +91 9876543220</div>
+                    <div class="mb-2">We can pickup this donation today evening. Our volunteers are
+                        available.</div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-success btn-sm"><i class="bi bi-check2 me-2"></i>Accept</button>
+                        <button class="btn btn-danger btn-sm"><i class="bi bi-x me-2"></i>Reject</button>
+                    </div>
+                </div>
+            </div>
+            <!-- NGO 2 -->
+            <div class="d-flex align-items-start gap-3 border rounded p-3 mb-3">
+                <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=50&h=50&fit=crop"
+                    alt="Helping Hands NGO" class="rounded-circle" width="48" height="48">
+                <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <div class="fw-semibold">Helping Hands NGO</div>
+                        <span class="text-muted small">6/13/2024 2:45:00 PM</span>
+                    </div>
+                    <div class="text-muted small mb-1">Contact: Amit Patel • +91 9876543221</div>
+                    <div class="mb-2">We serve meals to 200+ people daily. This donation would be very
+                        helpful.</div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-success btn-sm"><i class="bi bi-check2 me-2"></i>Accept</button>
+                        <button class="btn btn-danger btn-sm"><i class="bi bi-x me-2"></i>Reject</button>
+                    </div>
+                </div>
+            </div>
+            <!-- NGO 3 -->
+            <div class="d-flex align-items-start gap-3 border rounded p-3">
+                <span class="rounded-circle bg-secondary d-flex align-items-center justify-content-center"
+                    style="width:48px;height:48px;">C</span>
+                <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <div class="fw-semibold">Community Kitchen</div>
+                        <span class="text-muted small">6/12/2024 10:15:00 PM</span>
+                    </div>
+                    <div class="text-muted small mb-1">Contact: Sunita Gupta • +91 9876543222</div>
+                    <div class="mb-2">We operate a community kitchen and can utilize these fresh vegetables
+                        effectively.</div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-success btn-sm"><i class="bi bi-check2 me-2"></i>Accept</button>
+                        <button class="btn btn-danger btn-sm"><i class="bi bi-x me-2"></i>Reject</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Transparent Modal for viewing images -->
+<%- include('../partials/viewImagesModal') %>
+
+<!-- Modal for donation pickup request -->
+<div class="modal fade" id="requestDonationModal" tabindex="-1" aria-labelledby="requestDonationLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="requestDonationLabel">Request Donation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+        <form id="requestDonationForm">
+          <!-- Hidden Inputs -->
+          <input type="hidden" id="donationId" name="donationId" value="<%= donation._id %>">
+          <input type="hidden" id="donorId" name="donorId" value="<%= donation.donorId._id %>">
+          <input type="hidden" id="ngoId" name="ngoId" value="<%= ngoId.toString() %>">
+
+          <!-- Message Textarea -->
+          <div class="mb-3">
+            <label for="message" class="form-label">Message</label>
+            <textarea id="message" name="message" class="form-control" rows="4" placeholder="Write your message here..." required></textarea>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="text-end">
+            <button type="submit" class="btn btn-primary">Send Request</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+    const lat = parseFloat('<%= donation.location.latitude %>');
+    const lng = parseFloat('<%= donation.location.longitude %>');
+
+    const map = L.map('pickupMap').setView([lat, lng], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    L.marker([lat, lng]).addTo(map)
+        .bindPopup('Donation Pickup Location')
+        .openPopup();
+</script>
+
+<!-- Embed donation.foodItems as JS -->
+<script>
+    window.foodItems = <%- JSON.stringify(donation.items) %>;
+    window.viewerDonationImages = <%- JSON.stringify(donation.images || []) %>;
+    window.viewerDonationImagesIndex = 0;
+    window.ngoId = '<%= ngoId ? ngoId.toString() : '' %>';
+    if(ngoId) {
+        console.log(ngoId);
+    }
+</script>
+
+<% } %>
+
+<%- include('../partials/footer') %>

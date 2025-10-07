@@ -1,5 +1,10 @@
 # Dependencies
-/node_modules
+/node_modules/
 
 # Environment variables
 .env
+
+# Public assets
+/public/documents/
+/public/images/
+

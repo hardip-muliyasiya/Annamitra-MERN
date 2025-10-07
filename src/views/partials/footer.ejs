@@ -1,4 +1,17 @@
     <div id="alertContainer" class="position-fixed top-0 start-50 translate-middle-x mt-3" style="z-index: 1055; width: 100%; max-width: 600px;"></div>
+    
+    <script src="/js/utils.js"></script>
+    <script src="/js/validators.js"></script>
+    <script src="/js/listeners.js"></script>
+    <script src="/js/script.js"></script>
+
+    <% if (message) { %>
+        <script>
+            window.addEventListener('DOMContentLoaded', () => {
+                showAlert('<%= messageType %>', '<%= message %>');
+            });
+        </script>
+    <% } %>
 
     <footer class="donate-footer">
         <header>
@@ -71,16 +84,6 @@
             </div>
         </div>
     </footer>
-
-    <script src="/js/script.js"></script>
-
-    <% if (errorMessage) { %>
-        <script>
-            window.addEventListener('DOMContentLoaded', () => {
-                showAlert(alertTypes.Danger, '<%= errorMessage %>');
-            });
-        </script>
-    <% } %>
 </body>
 
 </html>

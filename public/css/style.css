@@ -1167,3 +1167,111 @@ main p {
 .ngo-donations .nav-tabs .nav-link.active {
     color: #2c3e50 !important;
 }
+
+
+
+
+/* ===============================================  Notifications Styling  =============================================== */
+
+
+.notifications-wrapper {
+    background-color: var(--am-darktheme-light);
+}
+
+.notification-item {
+    background-color: #1e1e2f; /* dark card-like bg */
+    border: 1px solid #2c2c3c;
+    transition: background 0.3s ease;
+}
+
+.notification-item:hover {
+    background-color: #2a2a3d;
+}
+
+.notification-item h6 {
+    color: #ffffff;
+}
+
+.notification-item p {
+    font-size: 0.9rem;
+}
+
+.notification-item small {
+    font-size: 0.8rem;
+}
+
+
+
+/* ===================================================  NGO cards css  =================================================== */
+.ngo-card {
+    background-color: #1e1e2f;  /* card dark background */
+    border: 1px solid #2c2c3c;
+    transition: transform 0.2s ease, background 0.3s ease;
+    height: 100%;
+}
+.ngo-card:hover {
+    background-color: #2a2a3d;
+    transform: translateY(-3px);
+}
+.ngo-logo {
+    width: 50px;
+    height: 50px;
+}
+.ngo-card h5 {
+    color: #fff;
+}
+.ngo-card p {
+    font-size: 0.9rem;
+}
+
+
+
+
+
+/* =================================================   NGO Details Page  ================================================= */
+
+.ngo-details-card {
+    background-color: #1e1e2f;
+    border: 1px solid #2c2c3c;
+}
+
+.ngo-banner {
+    height: 150px;
+    background: linear-gradient(135deg, #6a5acd, #836fff);
+}
+
+.ngo-logo {
+    width: 70px;
+    height: 70px;
+}
+
+.ngo-section {
+    background-color: #1e1e2f;
+    border: 1px solid #2c2c3c;
+}
+
+.stat-item h5 {
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+
+
+
+
+/* ================================================= Manage volunteer account css  ================================================= */
+
+.ngo-section {
+  background-color: #1e1e2f;
+  border: 1px solid #2c2c3c;
+}
+
+.ngo-logo {
+  width: 70px;
+  height: 70px;
+}
+
+.form-control[disabled], 
+textarea[disabled] {
+  opacity: 0.7;
+}

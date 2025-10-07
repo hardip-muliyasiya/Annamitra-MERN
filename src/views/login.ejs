@@ -24,14 +24,17 @@
                                     <h2 class="login-title">LOGIN</h2>
                                     <p class="login-access-desc">Access your account</p>
                                 </div>
-                                <form class="login-form" style="width: 100%;">
+                                
+                                <form action="/auth/login" method="POST" class="login-form" style="width: 100%;">
                                     <div class="mb-3">
-                                        <input placeholder="Email" required class="form-control login-input"
-                                            type="email" name="email">
+                                        <input placeholder="Email" class="form-control login-input"
+                                            type="email" name="email" id="email">
+                                        <div class="error-message text-danger small mt-1"></div>
                                     </div>
                                     <div class="mb-4">
-                                        <input placeholder="Password" required class="form-control login-input"
-                                            type="password" name="password">
+                                        <input placeholder="Password" class="form-control login-input"
+                                            type="password" name="password" id="password">
+                                        <div class="error-message text-danger small mt-1"></div>
                                     </div>
                                     <button type="submit" class="btn btn-primary login-btn">Sign In</button>
                                 </form>

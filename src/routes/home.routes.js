@@ -11,5 +11,8 @@ router.get('/about', homeController.renderAboutPage);
 // Route for the contact page
 router.get('/contact', homeController.renderContactPage);
 
+// Route for testing purpose
+router.get('/test', homeController.testRoute);
+
 
 module.exports = router;

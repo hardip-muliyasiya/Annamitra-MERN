@@ -110,7 +110,15 @@ const donationSchema = new mongoose.Schema({
 
     personName: { type: String, required: true },
 
-    assignedNgoId: { type: mongoose.Schema.Types.ObjectId, ref: 'NGO', default: null }
+    assignedNgoId: { type: mongoose.Schema.Types.ObjectId, ref: 'NGO', default: null },
+    
+    // OTP fields for pickup verification
+    otp: { type: String, default: null },
+    otpExpiry: { type: Date, default: null },
+    otpGeneratedAt: { type: Date, default: null },
+    
+    // Pickup tracking
+    pickedAt: { type: Date, default: null }
 }, {
     timestamps: true // adds createdAt and updatedAt
 });
